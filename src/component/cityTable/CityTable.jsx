@@ -39,6 +39,13 @@ const CityTable = () => {
     navigate(`/${cityName}`);
   };
 
+  const handleContextMenu = (e) => {
+    e.preventDefault(); // Prevent the default context menu
+    const cityIndex = e.target.parentElement.rowIndex - 1;
+    const cityName = cityData[cityIndex].state;
+    window.open(`/${cityName}`, "_blank");
+  };
+
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold mb-4 text-center">City Data</h2>
@@ -53,19 +60,25 @@ const CityTable = () => {
           <option value="population-decrease">Population Decrease</option>
         </select>
       </div>
-      <table className="w-full border-collapse border border-gray-300 bg-transparent">
+      <table className="w-full border-collapse border border-gray-300 bg-transparent mx-2 w-fit">
         <thead>
           <tr className="bg-gray-100">
             <th className="border border-gray-300 py-2 px-4">s.No.</th>
             <th className="border border-gray-300 py-2 px-4">Country</th>
             <th className="border border-gray-300 py-2 px-4">State</th>
             <th className="border border-gray-300 py-2 px-4">Population</th>
-            <th className="border border-gray-300 py-2 px-4">Timezone</th>
-            <th className="border border-gray-300 py-2 px-4">Country Code</th>
-            <th className="border border-gray-300 py-2 px-4">Coordinates</th>
+            <th className="border border-gray-300 py-2 px-4 hidden sm:table-cell">
+              Timezone
+            </th>
+            <th className="border border-gray-300 py-2 px-4 hidden md:table-cell">
+              Country Code
+            </th>
+            <th className="border border-gray-300 py-2 px-4 hidden lg:table-cell">
+              Coordinates
+            </th>
           </tr>
         </thead>
-        <tbody onClick={handleCityClick}>
+        <tbody onClick={handleCityClick} onContextMenu={handleContextMenu}>
           {cityData.map((city, index) => (
             <tr
               key={index}
@@ -80,13 +93,13 @@ const CityTable = () => {
               <td className="border border-gray-300 py-2 px-4">
                 {city.population}
               </td>
-              <td className="border border-gray-300 py-2 px-4">
+              <td className="border border-gray-300 py-2 px-4 hidden sm:table-cell">
                 {city.timezone}
               </td>
-              <td className="border border-gray-300 py-2 px-4">
+              <td className="border border-gray-300 py-2 px-4 hidden md:table-cell">
                 {city.countryCode}
               </td>
-              <td className="border border-gray-300 py-2 px-4">
+              <td className="border border-gray-300 py-2 px-4 hidden lg:table-cell">
                 {city.coordinates &&
                   `Lat: ${city.coordinates.lat}, Lon: ${city.coordinates.lon}`}
               </td>
